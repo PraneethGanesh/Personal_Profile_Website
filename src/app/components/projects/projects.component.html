@@ -1,0 +1,44 @@
+<section class="projects" id="projects">
+  <p class="section-kicker">Selected work</p>
+  <h2 class="heading">My <span>Projects</span></h2>
+  <div class="project-toolbar">
+    <label for="project-search">Find a project</label>
+    <div class="search-field">
+      <i class="bx bx-search" aria-hidden="true"></i>
+      <input id="project-search" type="search" placeholder="Search by name, technology, or feature…" [value]="query()" (input)="query.set($any($event.target).value)" />
+    </div>
+    <div class="filter-chips" role="group" aria-label="Filter projects by category">
+      @for (filter of categories; track filter) {
+        <button type="button" [class.selected]="category() === filter" [attr.aria-pressed]="category() === filter" (click)="category.set(filter)">{{ filter }}</button>
+      }
+    </div>
+    <p class="result-count" role="status">{{ filteredProjects().length }} of {{ projects.length }} projects</p>
+  </div>
+  <div class="projects-container">
+    @for (project of filteredProjects(); track project.id) {
+      <article class="projects-box">
+        <i [class]="'bx ' + project.icon" aria-hidden="true"></i>
+        <p class="project-category">{{ project.category }}</p>
+        <h3>{{ project.title }}</h3>
+        <p>{{ project.description }}</p>
+        <ul class="technology-tags" aria-label="Technologies and features">
+          @for (tag of project.tags; track tag) { <li>{{ tag }}</li> }
+        </ul>
+        <div class="project-details" [id]="'project-details-' + project.id" [hidden]="!expanded().has(project.id)">
+          <ul>@for (detail of project.details; track detail) { <li>{{ detail }}</li> }</ul>
+        </div>
+        @if (project.url) {
+          <a [href]="project.url" class="project-source" target="_blank" rel="noopener noreferrer">{{ project.linkLabel }}<span class="sr-only">: {{ project.title }} (opens in a new tab)</span> <i class="bx bx-link-external" aria-hidden="true"></i></a>
+        }
+        <button type="button" class="btn view-details-btn" (click)="toggle(project.id)" [attr.aria-expanded]="expanded().has(project.id)" [attr.aria-controls]="'project-details-' + project.id">{{ expanded().has(project.id) ? 'Hide Details' : 'View Details' }}<span class="sr-only"> for {{ project.title }}</span></button>
+      </article>
+    } @empty {
+      <div class="empty-state">
+        <i class="bx bx-search-alt" aria-hidden="true"></i>
+        <h3>No matching projects</h3>
+        <p>Try another keyword or browse all categories.</p>
+        <button type="button" class="btn" (click)="resetFilters()">Clear filters</button>
+      </div>
+    }
+  </div>
+</section>

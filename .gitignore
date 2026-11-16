@@ -1,0 +1,14 @@
+node_modules/
+.npm-cache/
+dist/
+.angular/
+out-tsc/
+.idea/
+.vscode/
+.env
+backend/target/
+.maven-repository/
+verification-output/
+src/environments/environment.production.ts
+.vercel/
+

@@ -1,0 +1,16 @@
+<section class="experience" id="experience">
+  <p class="section-kicker">Professional background</p>
+  <h2 class="heading">My <span>Experience</span></h2>
+  <div class="experience-list">
+    @for (experience of experiences; track experience.company) {
+      <article class="experience-card">
+        <p class="experience-period">{{ experience.period }}</p>
+        <h3>{{ experience.role }}</h3>
+        <p class="experience-company">{{ experience.company }}</p>
+        <ul>
+          @for (detail of experience.details; track detail) { <li>{{ detail }}</li> }
+        </ul>
+      </article>
+    }
+  </div>
+</section>

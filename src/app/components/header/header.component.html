@@ -1,0 +1,19 @@
+<div class="reading-progress" aria-hidden="true" [style.width.%]="progress()"></div>
+<header class="header">
+  <a href="#home" class="logo">Praneeth<span class="logo-dot">.</span></a>
+  <nav id="main-navigation" class="navbar" [class.active]="menuOpen()" aria-label="Main navigation" (click)="closeMenu()">
+    @for (section of sections; track section.id) {
+      <a [href]="'#' + section.id" [class.active]="activeSection() === section.id" [attr.aria-current]="activeSection() === section.id ? 'location' : null">{{ section.label }}</a>
+    }
+  </nav>
+  <div class="header-actions">
+    <button type="button" class="theme-toggle" (click)="theme.cycle()" [attr.aria-label]="'Color theme: ' + theme.preference() + '. Switch to ' + (theme.preference() === 'system' ? 'light' : theme.preference() === 'light' ? 'dark' : 'system')" [title]="'Theme: ' + theme.preference()">
+      <i class="bx" [class.bx-desktop]="theme.preference() === 'system'" [class.bx-sun]="theme.preference() === 'light'" [class.bx-moon]="theme.preference() === 'dark'" aria-hidden="true"></i>
+      <span class="theme-label">{{ theme.preference() }}</span>
+    </button>
+    <button type="button" id="menu-icon" class="bx" [class.bx-menu]="!menuOpen()" [class.bx-x]="menuOpen()" (click)="menuOpen.set(!menuOpen())" aria-label="Toggle navigation" aria-controls="main-navigation" [attr.aria-expanded]="menuOpen()"></button>
+  </div>
+</header>
+@if (showBackToTop()) {
+  <a href="#home" class="back-to-top" aria-label="Back to top"><i class="bx bx-up-arrow-alt" aria-hidden="true"></i></a>
+}

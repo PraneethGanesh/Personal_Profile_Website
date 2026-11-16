@@ -1,0 +1,14 @@
+<section class="skills" id="skills">
+  <h2 class="heading">My <span>Skills</span></h2>
+  <div class="skills-container">
+    @for (skill of skills; track skill.title; let index = $index) {
+      <article class="skills-box">
+        <i [class]="'bx ' + skill.icon" aria-hidden="true"></i>
+        <h3>{{ skill.title }}</h3>
+        <p>{{ skill.summary }}</p>
+        <p [id]="'skill-details-' + index" [hidden]="!expanded().has(index)">{{ skill.details }}</p>
+        <button type="button" class="btn" (click)="toggle(index)" [attr.aria-expanded]="expanded().has(index)" [attr.aria-controls]="'skill-details-' + index">{{ expanded().has(index) ? 'Read Less' : 'Read More' }}<span class="sr-only"> about {{ skill.title }}</span></button>
+      </article>
+    }
+  </div>
+</section>

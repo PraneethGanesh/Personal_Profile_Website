@@ -1,0 +1,57 @@
+spring:
+  application:
+    name: portfolio-contact
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    admin:
+      fail-fast: true
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      acks: all
+      properties:
+        enable.idempotence: true
+        max.block.ms: 3000
+        delivery.timeout.ms: 10000
+        request.timeout.ms: 5000
+    consumer:
+      group-id: ${KAFKA_GROUP_ID:portfolio-contact-mail-v1}
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      enable-auto-commit: false
+      auto-offset-reset: earliest
+      max-poll-records: 1
+    listener:
+      ack-mode: manual_immediate
+  mail:
+    host: ${MAIL_HOST:localhost}
+    port: ${MAIL_PORT:1025}
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
+    properties:
+      mail.smtp.auth: ${MAIL_SMTP_AUTH:false}
+      mail.smtp.starttls.enable: ${MAIL_STARTTLS:false}
+      mail.smtp.starttls.required: ${MAIL_STARTTLS:false}
+      mail.smtp.connectiontimeout: 5000
+      mail.smtp.timeout: 5000
+      mail.smtp.writetimeout: 5000
+server:
+  port: ${PORT:8080}
+  forward-headers-strategy: none
+  error:
+    include-message: never
+contact:
+  topic: ${KAFKA_CONTACT_TOPIC:portfolio.contact.submitted.v1}
+  allowed-origins: ${CONTACT_ALLOWED_ORIGINS:http://localhost:4200,http://127.0.0.1:4200}
+  rate-limit-per-minute: ${CONTACT_RATE_LIMIT:5}
+  mail-from: ${MAIL_FROM:portfolio@example.test}
+  mail-to: ${MAIL_TO:inbox@example.test}
+  retries: ${CONTACT_MAIL_RETRIES:3}
+  retry-delay-ms: ${CONTACT_MAIL_RETRY_DELAY_MS:2000}
+---
+spring:
+  config:
+    activate:
+      on-profile: worker
+  main:
+    web-application-type: none
