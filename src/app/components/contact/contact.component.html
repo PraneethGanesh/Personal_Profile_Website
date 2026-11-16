@@ -1,6 +1,7 @@
 <section class="contact" id="contact">
   <h2 class="heading">Contact <span>Me</span></h2>
-  <p class="contact-note">You can reach me on <a href="https://www.linkedin.com/in/praneeth-ganesh/">LinkedIn</a>. Or send me a message below.</p>
+  <p class="contact-note">You can reach me on <a href="https://www.linkedin.com/in/praneeth-ganesh/">LinkedIn</a>.</p>
+  @if (contactEnabled) {
   <form #contactForm="ngForm" (ngSubmit)="submitMessage(contactForm)" [attr.aria-busy]="pending()" novalidate>
     <div class="input-box">
       <label class="sr-only" for="full-name">Full name</label>
@@ -20,4 +21,7 @@
       <p class="form-status" [attr.role]="failed() ? 'alert' : 'status'">{{ status() }}</p>
     }
   </form>
+  } @else {
+    <p class="contact-note">The contact form is currently unavailable. Please connect with me on LinkedIn.</p>
+  }
 </section>

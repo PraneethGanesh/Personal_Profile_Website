@@ -13,7 +13,7 @@ npm.cmd start
 Open http://localhost:4200. Use npm.cmd on Windows if PowerShell blocks npm.ps1.
 
 ## Build
-Production builds require your hosted backend's public HTTPS origin:
+The portfolio can deploy without a backend. Contact submissions remain unavailable until you set your hosted backend's public HTTPS origin:
 
 ```powershell
 $env:CONTACT_API_URL = 'https://your-real-backend.example.com'

@@ -16,6 +16,7 @@ const output = new URL('../verification-output/contact.component.mjs', import.me
 await mkdir(new URL('../verification-output/', import.meta.url), { recursive: true });
 await writeFile(output, code);
 const { ContactComponent } = await import(output.href);
+const { environment: testEnvironment } = await import(configUrl);
 function setup() {
   const response = new Subject();
   const calls = [];
@@ -24,6 +25,24 @@ function setup() {
   const form = { invalid: false, value: { fullName: ' Visitor ', email: 'visitor@example.test', message: ' Hello ' }, resetForm() { this.value = {}; this.resets++; }, resets: 0 };
   return { component, form, calls, response, injector };
 }
+test('an unconfigured backend preserves input and sends no request', () => {
+  const previousUrl = testEnvironment.apiBaseUrl;
+  testEnvironment.apiBaseUrl = '';
+  try {
+    const { component, form, calls, injector } = setup();
+    assert.equal(component.contactEnabled, false);
+    const values = { ...form.value };
+    component.submitMessage(form);
+    assert.equal(calls.length, 0);
+    assert.equal(component.pending(), false);
+    assert.equal(form.resets, 0);
+    assert.deepEqual(form.value, values);
+    injector.destroy();
+  } finally {
+    testEnvironment.apiBaseUrl = previousUrl;
+  }
+});
+
 test('submits existing fields, blocks pending resubmission, accepts only 202 and clears on success', () => {
   const { component, form, calls, response, injector } = setup();
   component.submitMessage(form);

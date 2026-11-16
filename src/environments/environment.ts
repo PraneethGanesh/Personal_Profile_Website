@@ -1,2 +1,2 @@
-// Public browser configuration. Use '' for a same-origin /api reverse proxy.
+// Local browser configuration. An empty API URL disables contact submissions.
 export const environment = { apiBaseUrl: 'http://localhost:8080' };

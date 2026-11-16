@@ -2,8 +2,14 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { productionContactConfig } from './configure-contact.mjs';
 
-test('production build requires a hosted API rather than silently shipping localhost', () => {
-  for (const value of [undefined, '', ' ', 'http://api.example.com', 'https://localhost', 'https://127.0.0.1', 'https://test.localhost']) {
+test('missing backend URL permits a portfolio-only deployment', () => {
+  for (const value of [undefined, '', ' ']) {
+    assert.deepEqual(productionContactConfig(value), { apiBaseUrl: '' });
+  }
+});
+
+test('configured backend still requires HTTPS and rejects localhost', () => {
+  for (const value of ['http://api.example.com', 'https://localhost', 'https://127.0.0.1', 'https://test.localhost']) {
     assert.throws(() => productionContactConfig(value));
   }
 });

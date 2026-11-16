@@ -73,7 +73,7 @@ The current limiter uses the direct remote IP and ignores forwarded headers. Beh
 
 Import the Angular project directory containing `package.json` and `vercel.json`.
 
-In Vercel project settings, add a **build environment variable**:
+To enable the contact form, add a **build environment variable** in Vercel project settings. Leave it unset to publish the portfolio with a LinkedIn contact option while backend hosting is pending:
 
 ```text
 CONTACT_API_URL=https://your-backend.example.com
@@ -81,7 +81,7 @@ CONTACT_API_URL=https://your-backend.example.com
 
 Use the real backend origin, without `/api/contact`. This URL is public browser configuration. Set it for Production and any Preview environments you want to use, then redeploy after changing it.
 
-`vercel.json` selects `npm run build` and `dist/portfolio/browser`. Production builds generate a separate Angular configuration and fail early if the backend URL is missing, uses HTTP, or contains credentials. Local `npm start` continues to use `http://localhost:8080`.
+`vercel.json` selects `npm run build` and `dist/portfolio/browser`. Production builds generate a separate Angular configuration. An unset or blank backend URL disables contact submissions and displays a LinkedIn contact option. A supplied URL still fails validation if it uses HTTP, localhost, credentials, or a path. Local `npm start` continues to use `http://localhost:8080`.
 
 To build production locally:
 
@@ -107,8 +107,8 @@ References: [Vercel build settings](https://vercel.com/docs/builds/configure-a-b
 
 ## Verification in the restricted editing session
 
-- Passed: six frontend/configuration tests, strict Angular template/type checking, and Docker Compose configuration validation.
-- Confirmed: production configuration generation and rejection of a missing backend URL. The temporary example URL was removed after checks.
+- Passed: eight frontend/configuration tests and strict Angular template/type checking. Docker Compose configuration validation passed during the earlier contact setup.
+- Confirmed: production configuration generation succeeds without a backend URL, and unconfigured contact submissions send no requests. Invalid supplied URLs remain rejected.
 - Blocked: Docker daemon access is denied, so the running Kafka/SMTP flow could not be exercised here.
 - Blocked: Maven's required Spring Boot parent is absent from the offline cache. Backend tests have not passed here.
 - Blocked: the production bundler cannot read ancestor directories in this Windows session. A complete production build has not passed here.

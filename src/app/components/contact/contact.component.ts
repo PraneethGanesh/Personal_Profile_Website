@@ -11,6 +11,7 @@ import { environment } from '../../../environments/environment';
 })
 export class ContactComponent {
   private readonly http = inject(HttpClient);
+  readonly contactEnabled = !!environment.apiBaseUrl.trim();
   readonly pending = signal(false);
   readonly status = signal('');
   readonly failed = signal(false);
@@ -23,7 +24,7 @@ export class ContactComponent {
   }
 
   submitMessage(form: NgForm): void {
-    if (this.pending()) { return; }
+    if (!this.contactEnabled || this.pending()) { return; }
     this.status.set('');
     this.failed.set(false);
     if (form.invalid) { return; }
