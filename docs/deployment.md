@@ -73,7 +73,7 @@ The current limiter uses the direct remote IP and ignores forwarded headers. Beh
 
 Import the Angular project directory containing `package.json` and `vercel.json`.
 
-To enable the contact form, add a **build environment variable** in Vercel project settings. Leave it unset to publish the portfolio with a LinkedIn contact option while backend hosting is pending:
+To enable the contact form, add a **build environment variable** in Vercel project settings. Leave it unset to publish the portfolio with the contact form visibly unavailable while backend hosting is pending:
 
 ```text
 CONTACT_API_URL=https://your-backend.example.com
@@ -81,7 +81,7 @@ CONTACT_API_URL=https://your-backend.example.com
 
 Use the real backend origin, without `/api/contact`. This URL is public browser configuration. Set it for Production and any Preview environments you want to use, then redeploy after changing it.
 
-`vercel.json` selects `npm run build` and `dist/portfolio/browser`. Production builds generate a separate Angular configuration. An unset or blank backend URL disables contact submissions and displays a LinkedIn contact option. A supplied URL still fails validation if it uses HTTP, localhost, credentials, or a path. Local `npm start` continues to use `http://localhost:8080`.
+`vercel.json` selects `npm run build` and `dist/portfolio/browser`. Production builds generate a separate Angular configuration. An unset or blank backend URL disables the form controls and displays an availability notice. A supplied URL still fails validation if it uses HTTP, localhost, credentials, or a path. Local `npm start` continues to use `http://localhost:8080`.
 
 To build production locally:
 

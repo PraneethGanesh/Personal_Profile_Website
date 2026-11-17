@@ -1,27 +1,52 @@
-<section class="contact" id="contact">
-  <h2 class="heading">Contact <span>Me</span></h2>
-  <p class="contact-note">You can reach me on <a href="https://www.linkedin.com/in/praneeth-ganesh/">LinkedIn</a>.</p>
-  @if (contactEnabled) {
-  <form #contactForm="ngForm" (ngSubmit)="submitMessage(contactForm)" [attr.aria-busy]="pending()" novalidate>
-    <div class="input-box">
-      <label class="sr-only" for="full-name">Full name</label>
-      <input id="full-name" type="text" name="fullName" ngModel [readOnly]="pending()" required maxlength="120" autocomplete="name" placeholder="Full Name" #fullName="ngModel" [attr.aria-invalid]="contactForm.submitted && fullName.invalid" />
-      <label class="sr-only" for="email">Email address</label>
-      <input id="email" type="email" name="email" ngModel [readOnly]="pending()" required email maxlength="254" autocomplete="email" placeholder="Email Address" #email="ngModel" [attr.aria-invalid]="contactForm.submitted && email.invalid" />
+<section class="contact" id="contact" aria-labelledby="contact-heading">
+  <p class="section-kicker">Let’s build something useful</p>
+  <h2 class="heading" id="contact-heading">Get in <span>Touch</span></h2>
+  <div class="contact-layout">
+    <div class="contact-copy">
+      <div class="contact-symbol" aria-hidden="true"><i class="bx bx-message-square-detail"></i></div>
+      <h3>Have a project in mind?</h3>
+      <p>I welcome conversations about software engineering opportunities, interesting projects, and collaborations.</p>
+      <p>Tell me what you’re working on, what you need, and how I can help. Leave your email so I can reply.</p>
+      <ul class="contact-topics" aria-label="Areas of interest">
+        <li>Frontend &amp; backend development</li>
+        <li>Cloud &amp; DevOps</li>
+        <li>AI &amp; research</li>
+      </ul>
     </div>
-    <label class="sr-only" for="message">Your message</label>
-    <textarea id="message" name="message" ngModel [readOnly]="pending()" required maxlength="5000" rows="10" placeholder="Your Message" #message="ngModel" aria-describedby="message-count" [attr.aria-invalid]="contactForm.submitted && message.invalid"></textarea>
-    <p id="message-count" class="character-count">{{ message.value?.length || 0 }} / 5,000 characters</p>
-    @if (contactForm.submitted && contactForm.invalid) {
-      <p class="form-status" role="alert">Please enter your name, a valid email address, and a message.</p>
-    }
-    <button type="submit" class="btn" [disabled]="pending()">{{ pending() ? 'Sending...' : 'Send Message' }}</button>
-    <button type="button" class="btn secondary-btn" [disabled]="pending()" (click)="clearMessage(contactForm)">Clear form</button>
-    @if (status()) {
-      <p class="form-status" [attr.role]="failed() ? 'alert' : 'status'">{{ status() }}</p>
-    }
-  </form>
-  } @else {
-    <p class="contact-note">The contact form is currently unavailable. Please connect with me on LinkedIn.</p>
-  }
+    <form class="contact-card" #contactForm="ngForm" (ngSubmit)="submitMessage(contactForm)" [attr.aria-busy]="pending()" aria-labelledby="message-heading" aria-describedby="contact-availability" novalidate>
+      <h3 id="message-heading">Send a message</h3>
+      <p class="contact-form-note">All fields are required.</p>
+      <p id="contact-availability" class="contact-availability" [class.unavailable]="!contactEnabled">{{ contactEnabled ? 'Your message will be sent privately. Your email is used to reply.' : 'Message delivery is temporarily unavailable. Please try again later.' }}</p>
+      <fieldset [disabled]="!contactEnabled">
+        <legend class="sr-only">Your contact details and message</legend>
+        <div class="contact-fields">
+          <div class="contact-field">
+            <label for="full-name">Full name <span aria-hidden="true">*</span></label>
+            <input id="full-name" type="text" name="fullName" ngModel [readOnly]="pending()" required maxlength="120" autocomplete="name" placeholder="Your name" #fullName="ngModel" [attr.aria-invalid]="(fullName.touched || contactForm.submitted) && fullName.invalid" aria-describedby="name-error" />
+            <p id="name-error" class="field-error">@if ((fullName.touched || contactForm.submitted) && fullName.invalid) { Please enter your name. }</p>
+          </div>
+          <div class="contact-field">
+            <label for="email">Email address <span aria-hidden="true">*</span></label>
+            <input id="email" type="email" name="email" ngModel [readOnly]="pending()" required email maxlength="254" autocomplete="email" placeholder="you@example.com" #email="ngModel" [attr.aria-invalid]="(email.touched || contactForm.submitted) && email.invalid" aria-describedby="email-error" />
+            <p id="email-error" class="field-error">@if ((email.touched || contactForm.submitted) && email.invalid) { Please enter a valid email address. }</p>
+          </div>
+        </div>
+        <div class="contact-field">
+          <label for="message">Message <span aria-hidden="true">*</span></label>
+          <textarea id="message" name="message" ngModel [readOnly]="pending()" required maxlength="5000" rows="6" placeholder="Tell me about your project or opportunity…" #message="ngModel" aria-describedby="message-error message-count" [attr.aria-invalid]="(message.touched || contactForm.submitted) && message.invalid"></textarea>
+          <div class="message-meta">
+            <p id="message-error" class="field-error">@if ((message.touched || contactForm.submitted) && message.invalid) { Please enter a message. }</p>
+            <p id="message-count" class="character-count">{{ message.value?.length || 0 }} / 5,000</p>
+          </div>
+        </div>
+        <div class="contact-actions">
+          <button type="submit" class="btn" [disabled]="!contactEnabled || pending()">{{ pending() ? 'Sending…' : 'Send Message' }} <i class="bx bx-send" aria-hidden="true"></i></button>
+          <button type="button" class="btn secondary-btn" [disabled]="!contactEnabled || pending()" (click)="clearMessage(contactForm)">Clear</button>
+        </div>
+      </fieldset>
+      @if (status()) {
+        <p class="form-status" [class.form-error]="failed()" [attr.role]="failed() ? 'alert' : 'status'">{{ status() }}</p>
+      }
+    </form>
+  </div>
 </section>

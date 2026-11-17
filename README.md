@@ -49,3 +49,9 @@ Professional content now reflects the supplied résumé, including work experien
 
 The original HTML website is untouched.
 
+
+## Contact layout and initial HTML
+
+The contact section keeps its labelled form visible when no production API URL is configured; its controls are disabled and an availability notice is shown. No duplicate LinkedIn text or links appear in the contact section. Footer social icons remain available.
+
+`src/index.html` includes a visible initial profile overview with one H1, section headings, and internal navigation for visitors and crawlers before JavaScript runs. Angular replaces that overview with the interactive portfolio on startup. This is a static overview, not full Angular server rendering; keep its facts aligned with the component content when updating the profile. The title and description describe the software engineering portfolio. Rerun the SEO audit on the deployed URL after pushing these changes.
