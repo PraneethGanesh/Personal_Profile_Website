@@ -142,7 +142,9 @@ export class ProjectsComponent {
             "Includes saved theme preferences, keyboard navigation, and reduced-motion support.",
             "The contact API queues submissions through Kafka for a separate email worker.",
             "Docker Compose provides a local environment for the backend and broker."
-        ]
+        ],
+        "url": "https://github.com/PraneethGanesh/Personal_Profile_Website",
+        "linkLabel": "View on GitHub"
     }
 ];
   readonly filteredProjects = computed(() => {
